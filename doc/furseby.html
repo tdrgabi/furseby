@@ -1,0 +1,85 @@
+<!-- this file was generated automatically by noweave; better not edit it-->
+<html><head><title>src/furseby.nw</title></head><body><html>
+<HEAD>
+<title>Furseby - webscrapper</title></HEAD>
+<BODY>
+
+<H1>An easily extensible webscrapper + GUI</H1>
+
+<h2><a name="contents"><a name="NWD40LmyK-1">Contents</a></a></h2>
+<ul>
+<li><a href="#intro">Introduction</a>
+<li><a href="#index">Index</a>
+</ul>
+
+<h2><a name="intro">Introduction</a></h2>
+<p>Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial</p>
+
+<pre><a name="NW40LmyK-1p0Y9w-1" href="#NWD40LmyK-1"><dfn>&lt;*&gt;=</dfn></a>
+<a name="NW40LmyK-1p0Y9w-1-u1" href="#NW40LmyK-2o7f08-1"><i>&lt;Used libraries&gt;</i></a>
+<a name="NW40LmyK-1p0Y9w-1-u2" href="#NW40LmyK-47ccjz-1"><i>&lt;Loading packages&gt;</i></a>
+<a name="NW40LmyK-1p0Y9w-1-u3" href="#NW40LmyK-1LSaVp-1"><i>&lt;Package definition&gt;</i></a>
+<a name="NW40LmyK-1p0Y9w-1-u4" href="#NW40LmyK-2JqGE-1"><i>&lt;GUI code&gt;</i></a>
+<a name="NW40LmyK-1p0Y9w-1-u5" href="#NWD40LmyK-2"><i>&lt;How to run&gt;</i></a>
+</pre><p>
+
+
+<pre><a name="NW40LmyK-2o7f08-1" href="#NW40LmyK-2o7f08-1"><dfn>&lt;Used libraries&gt;=</dfn></a> <b>(<a href="#NWD40LmyK-1">&lt;-U</a>)</b>
+;(ql:system-apropos &quot;unit&quot;)/*(*//*)*/
+(ql:quickload &quot;cl-gtk2-gtk&quot;)
+(ql:quickload &quot;drakma&quot;)
+(ql:quickload &quot;cl-libxml2&quot;)
+(ql:quickload &quot;lisp-unit&quot;)
+(ql:quickload &quot;url-rewrite&quot;)
+</pre><p>
+
+<pre><a name="NW40LmyK-47ccjz-1" href="#NW40LmyK-47ccjz-1"><dfn>&lt;Loading packages&gt;=</dfn></a> <b>(<a href="#NWD40LmyK-1">&lt;-U</a>)</b>
+(load (compile-file &quot;/home/tudor/git/furseby/src/core.lisp&quot;))
+(load (compile-file &quot;/home/tudor/git/furseby/src/plugins/gutenberg.lisp&quot;))
+</pre><p>
+
+<pre><a name="NW40LmyK-1LSaVp-1" href="#NW40LmyK-1LSaVp-1"><dfn>&lt;Package definition&gt;=</dfn></a> <b>(<a href="#NWD40LmyK-1">&lt;-U</a>)</b>
+(defpackage :fur-seby
+  (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
+        :furseby.core
+        :furseby.plugins.gutenberg))
+
+(in-package :fur-seby)
+</pre><p>
+
+
+<pre><a name="NW40LmyK-2JqGE-1" href="#NW40LmyK-2JqGE-1"><dfn>&lt;GUI code&gt;=</dfn></a> <b>(<a href="#NWD40LmyK-1">&lt;-U</a>)</b>
+(defun run ()
+  (within-main-loop
+    (let ((builder (make-instance 'builder)))
+          (builder-add-from-file builder (namestring &quot;/home/tudor/furseby.glade&quot;))
+      (let ((window (builder-get-object builder &quot;window&quot;))
+            (search-field (builder-get-object builder &quot;search-field&quot;))
+            (result-label (builder-get-object builder &quot;result-label&quot;))
+            (result-view (builder-get-object builder &quot;result-view&quot;))
+            (prev (builder-get-object builder &quot;prev&quot;))
+            (copy (builder-get-object builder &quot;copy&quot;))
+            (next (builder-get-object builder &quot;next&quot;)))
+           (g-signal-connect window &quot;destroy&quot; (lambda (w) (declare (ignore w)) (leave-gtk-main)))
+           (widget-show window)))))
+</pre><p>
+<a name="NWD40LmyK-2">;(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))</a>
+
+<pre><a name="NW40LmyK-p8sLq-1" href="#NWD40LmyK-2"><dfn>&lt;How to run&gt;=</dfn></a> <b>(<a href="#NWD40LmyK-1">&lt;-U</a>)</b>
+;(search-all-sites &quot;Bovary&quot;)
+;(run)
+</pre><p>
+
+
+<ul>
+<li><a href="#NWD40LmyK-1"><i>&lt;*&gt;</i></a>: <a href="#NWD40LmyK-1">D1</a>
+<li><a href="#NW40LmyK-2JqGE-1"><i>&lt;GUI code&gt;</i></a>: <a href="#NWD40LmyK-1">U1</a>, <a href="#NW40LmyK-2JqGE-1">D2</a>
+<li><a href="#NWD40LmyK-2"><i>&lt;How to run&gt;</i></a>: <a href="#NWD40LmyK-1">U1</a>, <a href="#NWD40LmyK-2">D2</a>
+<li><a href="#NW40LmyK-47ccjz-1"><i>&lt;Loading packages&gt;</i></a>: <a href="#NWD40LmyK-1">U1</a>, <a href="#NW40LmyK-47ccjz-1">D2</a>
+<li><a href="#NW40LmyK-1LSaVp-1"><i>&lt;Package definition&gt;</i></a>: <a href="#NWD40LmyK-1">U1</a>, <a href="#NW40LmyK-1LSaVp-1">D2</a>
+<li><a href="#NW40LmyK-2o7f08-1"><i>&lt;Used libraries&gt;</i></a>: <a href="#NWD40LmyK-1">U1</a>, <a href="#NW40LmyK-2o7f08-1">D2</a>
+</ul>
+<ul>
+</ul>
+</body></html>
+

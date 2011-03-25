@@ -1,17 +1,53 @@
+<html>
+<HEAD>
+<title>Furseby - webscrapper</title></HEAD>
+<BODY>
+
+<H1>An easily extensible webscrapper + GUI</H1>
+
+<h2><a name="contents">Contents</a></h2>
+<ul>
+<li><a href="#intro">Introduction</a>
+<li><a href="#index">Short code overview</a>
+</ul>
+
+<h2><a name="intro">Introduction</a></h2>
+<p>Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial.</p>
+
+<<*>>=
+<<Used libraries>>
+<<Loading packages>>
+<<Package definition>>
+<<GUI code>>
+<<How to run>>
+@
+
+
+<<Used libraries>>=
 ;(ql:system-apropos "unit")/*(*//*)*/
 (ql:quickload "cl-gtk2-gtk")
 (ql:quickload "drakma")
 (ql:quickload "cl-libxml2")
 (ql:quickload "lisp-unit")
 (ql:quickload "url-rewrite")
+@
+
+<<Loading packages>>=
 (load (compile-file "/home/tudor/git/furseby/src/core.lisp"))
 (load (compile-file "/home/tudor/git/furseby/src/plugins/gutenberg.lisp"))
+@
+
+<<Package definition>>=
 (defpackage :fur-seby
   (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
         :furseby.core
         :furseby.plugins.gutenberg))
 
 (in-package :fur-seby)
+@
+
+
+<<GUI code>>=
 (defun run ()
   (within-main-loop
     (let ((builder (make-instance 'builder)))
@@ -25,5 +61,10 @@
             (next (builder-get-object builder "next")))
            (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
            (widget-show window)))))
+@
+;(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))
+
+<<How to run>>=
 ;(search-all-sites "Bovary")
 ;(run)
+@

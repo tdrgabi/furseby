@@ -1,0 +1,30 @@
+<!-- this file was generated automatically by noweave; better not edit it-->
+<html><head><title>src/core.nw</title></head><body>(defpackage :furseby.core
+  (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite)
+  (:export :search-site
+           :search-all-sites
+           :*sites*
+           :make-site))
+
+(in-package :furseby.core)
+
+(defparameter *sites* '())
+
+(defstruct site url xpath parse-func url-func)
+
+<a name="NWD1Go8cT-1">(defun search-site (site criteria)</a>
+  (let* ((full-url (funcall (site-url-func site) (site-url site) criteria))
+        (doc (parse-html (puri:parse-uri full-url)))
+        (nodes (apply #'append (mapcar (lambda (x) (find-list doc x)) (site-xpath site)))))
+  (funcall (site-parse-func site) nodes)))
+
+(defun search-all-sites (criteria)
+  (mapcar (lambda (site) (search-site site criteria)) *sites*))
+
+
+<ul>
+</ul>
+<ul>
+</ul>
+</body></html>
+
