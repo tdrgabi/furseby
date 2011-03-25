@@ -1,3 +1,8 @@
+<<*>>=
+<<CODE>>
+@
+
+<<CODE>>=
 (defpackage :furseby.plugins.gutenberg
   (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
         :furseby.core))
@@ -28,3 +33,4 @@
                              "//table[@class='pgdbfiles']/tr[@class='oddrow']") 
                     :parse-func #'parse-gutenberg-nodes
                     :url-func #'get-gutenberg-url) *sites*)
+@

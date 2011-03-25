@@ -1,9 +1,14 @@
 <!-- this file was generated automatically by noweave; better not edit it-->
-<html><head><title>src/plugins/gutenberg.nw</title></head><body>(defpackage :furseby.plugins.gutenberg
+<html><head><title>src/plugins/gutenberg.nw</title></head><body><pre><a name="NW44kO8m-1p0Y9w-1" href="#NW44kO8m-1p0Y9w-1"><dfn>&lt;*&gt;=</dfn></a>
+<a name="NW44kO8m-1p0Y9w-1-u1" href="#NW44kO8m-4aLBOa-1"><i>&lt;CODE&gt;</i></a>
+</pre><p>
+
+<pre><a name="NW44kO8m-4aLBOa-1" href="#NW44kO8m-4aLBOa-1"><dfn>&lt;CODE&gt;=</dfn></a> <b>(<a href="#NW44kO8m-1p0Y9w-1">&lt;-U</a>)</b>
+(defpackage :furseby.plugins.gutenberg
   (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
         :furseby.core))
 
-(defparameter *search-criteria* "http://www.gutenberg.org/catalog/world/results?title=Bovary")
+(defparameter *search-criteria* &quot;http://www.gutenberg.org/catalog/world/results?title=Bovary&quot;)
 
 (in-package :furseby.plugins.gutenberg)
 
@@ -12,26 +17,29 @@
   ;(concatenate 'string base (url-encode url)))
 
 (defun parse-gutenberg-nodes (nodes)
-  (mapcar (lambda (x) (parse-gutenberg-row (find-list x ".td"))) nodes))
+  (mapcar (lambda (x) (parse-gutenberg-row (find-list x &quot;.td&quot;))) nodes))
 
 (defun parse-gutenberg-row (row)
   (list (get-authors (third row)) (get-title (fourth row)) (get-link (fourth row))))
 
 (defun get-authors (col)
-    (apply #'concatenate 'string (mapcar #'xtree:text-content (find-list col "a"))))
+    (apply #'concatenate 'string (mapcar #'xtree:text-content (find-list col &quot;a&quot;))))
 (defun get-title (col)
-    <a name="NWD44kO8m-1">(xtree:text-content (first (find-list col "a"))))</a>
+    (xtree:text-content (first (find-list col &quot;a&quot;))))
 (defun get-link (col)
-    (xtree:attribute-value (first (find-list col "a")) "href"))
+    (xtree:attribute-value (first (find-list col &quot;a&quot;)) &quot;href&quot;))
 
-(pushnew (make-site :url "file:///home/tudor/Downloads/results.htm"
-                    :xpath '("//table[@class='pgdbfiles']/tr[@class='evenrow']"
-                             "//table[@class='pgdbfiles']/tr[@class='oddrow']") 
+(pushnew (make-site :url &quot;file:///home/tudor/Downloads/results.htm&quot;
+                    :xpath '(&quot;//table[@class='pgdbfiles']/tr[@class='evenrow']&quot;
+                             &quot;//table[@class='pgdbfiles']/tr[@class='oddrow']&quot;) 
                     :parse-func #'parse-gutenberg-nodes
                     :url-func #'get-gutenberg-url) *sites*)
+</pre><p>
 
 
 <ul>
+<li><a href="#NW44kO8m-1p0Y9w-1"><i>&lt;*&gt;</i></a>: <a href="#NW44kO8m-1p0Y9w-1">D1</a>
+<li><a href="#NW44kO8m-4aLBOa-1"><i>&lt;CODE&gt;</i></a>: <a href="#NW44kO8m-1p0Y9w-1">U1</a>, <a href="#NW44kO8m-4aLBOa-1">D2</a>
 </ul>
 <ul>
 </ul>
