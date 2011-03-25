@@ -1,0 +1,21 @@
+(defpackage :furseby.core
+  (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite)
+  (:export :search-site
+           :search-all-sites
+           :*sites*
+           :make-site))
+
+(in-package :furseby.core)
+
+(defparameter *sites* '())
+
+(defstruct site url xpath parse-func url-func)
+
+(defun search-site (site criteria)
+  (let* ((full-url (funcall (site-url-func site) (site-url site) criteria))
+        (doc (parse-html (puri:parse-uri full-url)))
+        (nodes (apply #'append (mapcar (lambda (x) (find-list doc x)) (site-xpath site)))))
+  (funcall (site-parse-func site) nodes)))
+
+(defun search-all-sites (criteria)
+  (mapcar (lambda (site) (search-site site criteria)) *sites*))
