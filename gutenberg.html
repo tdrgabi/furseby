@@ -50,7 +50,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defpackage</span> <span class="ss">:furseby.plugins.gutenberg</span>
-  <span class="p">(</span><span class="ss">:use</span> <span class="ss">:cl</span> <span class="ss">:gtk</span> <span class="ss">:gdk</span> <span class="ss">:gobject</span> <span class="ss">:iter</span> <span class="ss">:drakma</span> <span class="ss">:html</span> <span class="ss">:puri</span> <span class="ss">:xpath</span> <span class="ss">:iter</span> <span class="ss">:url-rewrite</span>
+  <span class="p">(</span><span class="ss">:use</span> <span class="ss">:cl</span> <span class="ss">:xpath</span> <span class="ss">:url-rewrite</span>
         <span class="ss">:furseby.core</span><span class="p">))</span>
 
 <span class="p">(</span><span class="nb">in-package</span> <span class="ss">:furseby.plugins.gutenberg</span><span class="p">)</span></pre></div>
@@ -65,24 +65,13 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">get-gutenberg-url</span> <span class="p">(</span><span class="nv">base</span> <span class="nv">url</span><span class="p">)</span>
-  <span class="nv">base</span><span class="p">)</span></pre></div>
+  <span class="p">(</span><span class="nb">concatenate</span> <span class="ss">&#39;string</span> <span class="nv">base</span> <span class="p">(</span><span class="nv">url-encode</span> <span class="nv">url</span><span class="p">)))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
-      </div>
-      <p>(concatenate 'string base (url-encode url)))</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div><div class='section' id='section-5'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>helpful functions to extract relevant parts from the node</p>
     </div>
@@ -95,10 +84,10 @@
     <span class="p">(</span><span class="nv">xtree:attribute-value</span> <span class="p">(</span><span class="nb">first</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">col</span> <span class="s">&quot;a&quot;</span><span class="p">))</span> <span class="s">&quot;href&quot;</span><span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-6'>
+  <div class='clearall'></div><div class='section' id='section-5'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>This is a helpful function for the nodes parsing, it can parse one row</p>
     </div>
@@ -107,10 +96,10 @@
   <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">get-authors</span> <span class="p">(</span><span class="nb">third</span> <span class="nv">row</span><span class="p">))</span> <span class="p">(</span><span class="nv">get-title</span> <span class="p">(</span><span class="nb">fourth</span> <span class="nv">row</span><span class="p">))</span> <span class="p">(</span><span class="nv">get-link</span> <span class="p">(</span><span class="nb">fourth</span> <span class="nv">row</span><span class="p">))))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-7'>
+  <div class='clearall'></div><div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>A function which will parse the nodes it receives from the search result and combine the results</p>
     </div>
@@ -119,15 +108,15 @@
   <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">parse-gutenberg-row</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">x</span> <span class="s">&quot;.td&quot;</span><span class="p">)))</span> <span class="nv">nodes</span><span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-8'>
+  <div class='clearall'></div><div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>And finally, we create a new site, defining a list of xpatsh</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">pushnew</span> <span class="p">(</span><span class="nv">make-site</span> <span class="ss">:url</span> <span class="s">&quot;file:///home/tudor/Downloads/results.htm&quot;</span>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">pushnew</span> <span class="p">(</span><span class="nv">make-site</span> <span class="ss">:url</span> <span class="s">&quot;http://www.gutenberg.org/catalog/world/results?title=&quot;</span>
                     <span class="ss">:xpath</span> <span class="o">&#39;</span><span class="p">(</span><span class="s">&quot;//table[@class=&#39;pgdbfiles&#39;]/tr[@class=&#39;evenrow&#39;]&quot;</span>
                              <span class="s">&quot;//table[@class=&#39;pgdbfiles&#39;]/tr[@class=&#39;oddrow&#39;]&quot;</span><span class="p">)</span> 
                     <span class="ss">:parse-func</span> <span class="nf">#&#39;</span><span class="nv">parse-gutenberg-nodes</span>

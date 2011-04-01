@@ -21,29 +21,13 @@
       <p><strong>Furseby</strong> is an extensible webscrapper + GUI</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre> </pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-1'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
-      </div>
-      <h2>Left To do</h2>
-<ul>
-<li>show some results in gui</li>
-<li>research how packages are normally loaded (google.com/codesearch) since quickload takes a while</li>
-<li>do something about the paths using official clisp syntax</li>
-</ul>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre> </pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div><div class='section' id='section-2'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-2'>#</a>
       </div>
       <h2>Introduction</h2>
 <p>Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial.</p>
@@ -52,10 +36,10 @@
       <div class="highlight"><pre></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-3'>
+  <div class='clearall'></div><div class='section' id='section-2'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-3'>#</a>
+        <a class='octothorpe' href='#section-2'>#</a>
       </div>
       <h2>Get the code</h2>
 <p><a href="http://github.com/tdrgabi/furseby">github.com/tdrgabi/furseby</a></p>
@@ -65,10 +49,10 @@
       <div class="highlight"><pre></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-4'>
+  <div class='clearall'></div><div class='section' id='section-3'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
+        <a class='octothorpe' href='#section-3'>#</a>
       </div>
       <h3>Packages</h3>
 <ul>
@@ -81,10 +65,10 @@
       <div class="highlight"><pre> </pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-5'>
+  <div class='clearall'></div><div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       <h2>The code in detail</h2>
 <p>This package has the standard structure. Libraries, compile and load own packages, define current package and some gui code
@@ -94,19 +78,30 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class="highlight"><pre> </pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-6'>
+  <div class='clearall'></div><div class='section' id='section-5'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <h3>Used libraries</h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;cl-gtk2-gtk&quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;drakma&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;cl-libxml2&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;lisp-unit&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;url-rewrite&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h3>Loading packages</h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/master/src/core.lisp&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/master/src/plugins/gutenberg.lisp&quot;</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-7'>
@@ -114,11 +109,14 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <h3>Loading packages</h3>
+      <h3>Package definition</h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/src/core.lisp&quot;</span><span class="p">))</span>
-<span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/src/plugins/gutenberg.lisp&quot;</span><span class="p">))</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defpackage</span> <span class="ss">:furseby</span>
+  <span class="p">(</span><span class="ss">:use</span> <span class="ss">:cl</span> <span class="ss">:gtk</span> <span class="ss">:gdk</span> <span class="ss">:gobject</span> 
+        <span class="ss">:furseby.core</span>
+        <span class="ss">:furseby.plugins.gutenberg</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">in-package</span> <span class="ss">:furseby</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-8'>
@@ -126,15 +124,15 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <h3>Package definition</h3>
+      <h3>GUI code</h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">defpackage</span> <span class="ss">:fur-seby</span>
-  <span class="p">(</span><span class="ss">:use</span> <span class="ss">:cl</span> <span class="ss">:gtk</span> <span class="ss">:gdk</span> <span class="ss">:gobject</span> <span class="ss">:iter</span> <span class="ss">:drakma</span> <span class="ss">:html</span> <span class="ss">:puri</span> <span class="ss">:xpath</span> <span class="ss">:iter</span> <span class="ss">:url-rewrite</span>
-        <span class="ss">:furseby.core</span>
-        <span class="ss">:furseby.plugins.gutenberg</span><span class="p">))</span>
-
-<span class="p">(</span><span class="nb">in-package</span> <span class="ss">:fur-seby</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">run</span> <span class="p">()</span>
+  <span class="p">(</span><span class="nv">within-main-loop</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">builder</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;builder</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nv">builder-add-from-file</span> <span class="nv">builder</span> <span class="p">(</span><span class="nb">namestring</span> <span class="p">(</span><span class="nb">make-pathname</span> <span class="ss">:name</span> <span class="s">&quot;furseby&quot;</span>
+                                                                    <span class="ss">:type</span> <span class="s">&quot;glade&quot;</span>
+                                                                    <span class="ss">:directory</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:relative</span> <span class="s">&quot;gui&quot;</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-9'>
@@ -142,22 +140,16 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <h3>GUI code</h3>
+      <p>match the controls that matter to vars</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">run</span> <span class="p">()</span>
-  <span class="p">(</span><span class="nv">within-main-loop</span>
-    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">builder</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;builder</span><span class="p">)))</span>
-          <span class="p">(</span><span class="nv">builder-add-from-file</span> <span class="nv">builder</span> <span class="p">(</span><span class="nb">namestring</span> <span class="s">&quot;/home/tudor/furseby.glade&quot;</span><span class="p">))</span>
-      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">window</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
+      <div class="highlight"><pre>      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">window</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">search-field</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;search-field&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">result-label</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-label&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">result-view</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">prev</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;prev&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">copy</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;copy&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span>
-           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="nv">window</span> <span class="s">&quot;destroy&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">leave-gtk-main</span><span class="p">)))</span>
-           <span class="p">(</span><span class="nv">widget-show</span> <span class="nv">window</span><span class="p">)))))</span></pre></div>
+            <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-10'>
@@ -165,10 +157,11 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      <h3>How to run</h3>
+      <p>on window close keep the gtk running. helps with debugging</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="nv">window</span> <span class="s">&quot;destroy&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">leave-gtk-main</span><span class="p">)))</span>
+           <span class="p">(</span><span class="nv">widget-show</span> <span class="nv">window</span><span class="p">)))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-11'>
@@ -176,10 +169,12 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))</p>
+      <h3>How to run</h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nv">search-all-sites</span> <span class="s">&quot;Bovary&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nv">run</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-12'>
@@ -187,21 +182,17 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      <p>(search-all-sites "Bovary")</p>
+      <h2>Left To do</h2>
+<ul>
+<li>error handling in core</li>
+<li>show some results in gui</li>
+<li>research how packages are normally loaded (google.com/codesearch) since quickload takes a while</li>
+</ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div><div class='section' id='section-13'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-13'>#</a>
-      </div>
-      <p>(run)</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre> 
+
+</pre></div>
     </div>
   </div>
   <div class='clearall'></div>
