@@ -1,3 +1,4 @@
+
 (defpackage :furseby.core
   (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite)
   (:export :search-site
@@ -19,3 +20,4 @@
 
 (defun search-all-sites (criteria)
   (mapcar (lambda (site) (search-site site criteria)) *sites*))
+

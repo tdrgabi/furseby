@@ -7,12 +7,30 @@
 
 <h2><a name="contents">Contents</a></h2>
 <ul>
+<li><a href="#todo">To do</a>
 <li><a href="#intro">Introduction</a>
-<li><a href="#index">Short code overview</a>
+<li><a href="#overview">Short code overview</a>
+<li><a href="#code">The code in detail</a>
 </ul>
 
+<h2><a name="todo">To do</a></h2>
+<ul>
+    <li>to find a way to use the repl from nw file</li>
+    <li>vim coloring</li>
+    <li>add some test data in current folder</li>
+    <li>make this githubs first page</li>
+    <li>show some results in gui</li>
+    <li>research how packages are normally loaded (google.com/codesearch) since quickload takes a while</li>
+</ul>
 <h2><a name="intro">Introduction</a></h2>
 <p>Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial.</p>
+
+<h2><a name="overview">Short code overview</a></h2>
+<p>The main file, furseby.lisp, contains the gui code. It includes the core.lisp file which has all the functions required to post the query, parse and get results and the only plugin, currently available, the gutenberg plugin. The whole idea is that for a new site we add just the plugin, there is no need to write any other code. The plugin will define some xpath query and return the results in a predefined form. Thus the gui can show the results.
+
+<h2><a name="code">The code in detail</a></h2>
+<p>This package has the standard structure. Libraries, compile and load own packages, define current package and some gui code</p>
+<p>The gui was built with some GUI designer, which outputs .glade files. Then, using cl-gtk2-gtk library, we build the objects from the glade file</p>
 
 <<*>>=
 <<Used libraries>>
@@ -24,30 +42,36 @@
 
 
 <<Used libraries>>=
-;(ql:system-apropos "unit")/*(*//*)*/
+
 (ql:quickload "cl-gtk2-gtk")
 (ql:quickload "drakma")
 (ql:quickload "cl-libxml2")
 (ql:quickload "lisp-unit")
 (ql:quickload "url-rewrite")
+
 @
 
 <<Loading packages>>=
+
 (load (compile-file "/home/tudor/git/furseby/src/core.lisp"))
 (load (compile-file "/home/tudor/git/furseby/src/plugins/gutenberg.lisp"))
+
 @
 
 <<Package definition>>=
+
 (defpackage :fur-seby
   (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
         :furseby.core
         :furseby.plugins.gutenberg))
 
 (in-package :fur-seby)
+
 @
 
 
 <<GUI code>>=
+
 (defun run ()
   (within-main-loop
     (let ((builder (make-instance 'builder)))
@@ -61,10 +85,15 @@
             (next (builder-get-object builder "next")))
            (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
            (widget-show window)))))
+
 @
-;(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))
+
 
 <<How to run>>=
+
+;(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))
 ;(search-all-sites "Bovary")
+
 ;(run)
+
 @

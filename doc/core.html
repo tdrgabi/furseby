@@ -4,6 +4,7 @@
 </pre><p>
 
 <pre><a name="NW1Go8cT-4aLBOa-1" href="#NW1Go8cT-4aLBOa-1"><dfn>&lt;CODE&gt;=</dfn></a> <b>(<a href="#NW1Go8cT-1p0Y9w-1">&lt;-U</a>)</b>
+
 (defpackage :furseby.core
   (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite)
   (:export :search-site
@@ -25,6 +26,7 @@
 
 (defun search-all-sites (criteria)
   (mapcar (lambda (site) (search-site site criteria)) *sites*))
+
 </pre><p>
 
 
