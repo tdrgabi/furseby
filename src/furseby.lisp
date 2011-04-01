@@ -61,12 +61,21 @@
 
 ;### How to run ###
 
-(search-all-sites "Bovary")
+; Sample results from a plugin:
 
-(run)
+'(("Flaubert, Gustave, 1821-1880 [Author]Schurig, Arthur, 1870-1929 [Translator]"  "Frau Bovary" "/ebooks/15711")
+ ("Flaubert, Gustave, 1821-1880 [Author]" "Madame Bovary" "/ebooks/14155")
+ ("Flaubert, Gustave, 1821-1880 [Author]Schurig, Arthur, 1870-1929 [Translator]"  "Frau Bovary" "/ebooks/15711")
+ ("Flaubert, Gustave, 1821-1880 [Author]" "Madame Bovary" "/ebooks/2413")
+ ("Flaubert, Gustave, 1821-1880 [Author]"  "Madame BovaryA Tale of Provincial Life" "/ebooks/27575"))
+
 
 ; ## Left To do ##
 ; * error handling in core
 ; * show some results in gui
 ; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
+
+;(search-all-sites "Bovary")
+
+;(run)
  

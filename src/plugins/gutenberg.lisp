@@ -12,7 +12,6 @@
 (defpackage :furseby.plugins.gutenberg
   (:use :cl :xpath :url-rewrite
         :furseby.core))
-
 (in-package :furseby.plugins.gutenberg)
 
 ; Each plugin will define a function which returns the search url
@@ -33,10 +32,12 @@
 
 ; A function which will parse the nodes it receives from the search result and combine the results
 (defun parse-gutenberg-nodes (nodes)
-  (mapcar (lambda (x) (parse-gutenberg-row (find-list x ".td"))) nodes))
+  ; we take all the columns for each row in find-list, like "author" "link" "text"
+  (mapcar (lambda (x) (parse-gutenberg-row (find-list x "td"))) nodes))
 
 ; And finally, we create a new site, defining a list of xpatsh
 (pushnew (make-site :url "http://www.gutenberg.org/catalog/world/results?title="
+                    ;we extract a table with class pgdbfiles, and from him take all tr with class evenrow and oddrow
                     :xpath '("//table[@class='pgdbfiles']/tr[@class='evenrow']"
                              "//table[@class='pgdbfiles']/tr[@class='oddrow']") 
                     :parse-func #'parse-gutenberg-nodes

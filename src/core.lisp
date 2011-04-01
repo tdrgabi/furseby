@@ -8,7 +8,6 @@
            :search-all-sites
            :*sites*
            :make-site))
-
 (in-package :furseby.core)
 
 ; Each site, defined in a plugin, will know it's search url, which xpath to apply to the result, so that only the nodes that match are passed to plugin and which functions to call to parse the nodes
@@ -29,7 +28,8 @@
         ; nodes are the results that we get once we applied the xpaths from plugin
         (nodes (apply #'append (mapcar (lambda (x) (find-list doc x)) (site-xpath site)))))
   ; and finally we get to parse those nodes and return the result
-  (funcall (site-parse-func site) nodes)))
+  (funcall (site-parse-func site) nodes) ))
+
 
 ; this will only go through all the sites, apply the search-site function and collect the results
 (defun search-all-sites (criteria)
