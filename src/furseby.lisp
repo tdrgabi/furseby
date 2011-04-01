@@ -1,7 +1,6 @@
 ; # Extensible webscrapper + GUI #
  
 ; ## To do ##
-; * do something about lisp theme in vim, no folding
 ; * make this githubs first page
 ; * show some results in gui
 ; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
@@ -12,9 +11,11 @@
  
 ; ## Short code overview ##
 ; The main file, furseby.lisp, contains the gui code. It includes the core.lisp file which has all the functions required to post the query, parse and get results and the only plugin, currently available, the gutenberg plugin. The whole idea is that for a new site we add just the plugin, there is no need to write any other code. The plugin will define some xpath query and return the results in a predefined form. Thus the gui can show the results.
-; [furseby.lisp](/furseby.html) gui code
-; [gutenberg.lisp](/gutenberg.html) sample plugin to search project gutenberg
-; [core.lisp](/core.html) main functions
+
+; ### Packages ###
+; * [furseby](furseby.html) gui code
+; * [furseby.core](core.html) core functions for applying criterias to all sites and collecting results
+; * [furseby.plugins.gutenberg](gutenberg.html) sample plugin to search project gutenberg
  
 ; ## The code in detail ##
 ; This package has the standard structure. Libraries, compile and load own packages, define current package and some gui code

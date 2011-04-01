@@ -60,13 +60,10 @@
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
       <h2>Short code overview</h2>
-<p>The main file, furseby.lisp, contains the gui code. It includes the core.lisp file which has all the functions required to post the query, parse and get results and the only plugin, currently available, the gutenberg plugin. The whole idea is that for a new site we add just the plugin, there is no need to write any other code. The plugin will define some xpath query and return the results in a predefined form. Thus the gui can show the results.
-<a href="/furseby.html">furseby.lisp</a> gui code
-<a href="/gutenberg.html">gutenberg.lisp</a> sample plugin to search project gutenberg
-<a href="/core.html">core.lisp</a> main functions</p>
+<p>The main file, furseby.lisp, contains the gui code. It includes the core.lisp file which has all the functions required to post the query, parse and get results and the only plugin, currently available, the gutenberg plugin. The whole idea is that for a new site we add just the plugin, there is no need to write any other code. The plugin will define some xpath query and return the results in a predefined form. Thus the gui can show the results.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre> </pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-4'>
@@ -74,9 +71,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <h2>The code in detail</h2>
-<p>This package has the standard structure. Libraries, compile and load own packages, define current package and some gui code
-The gui was built with some GUI designer, which outputs .glade files. Then, using cl-gtk2-gtk library, we build the objects from the glade file</p>
+      <h3>Packages</h3>
+<ul>
+<li><a href="furseby.html">furseby</a> gui code</li>
+<li><a href="gutenberg.html">furseby.plugins.gutenberg</a> sample plugin to search project gutenberg</li>
+<li><a href="core.html">furseby.core</a> core functions for applying criterias to all sites and collecting results</li>
+</ul>
     </div>
     <div class='code'>
       <div class="highlight"><pre> </pre></div>
@@ -86,6 +86,19 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h2>The code in detail</h2>
+<p>This package has the standard structure. Libraries, compile and load own packages, define current package and some gui code
+The gui was built with some GUI designer, which outputs .glade files. Then, using cl-gtk2-gtk library, we build the objects from the glade file</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre> </pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <h3>Used libraries</h3>
     </div>
@@ -97,10 +110,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
 <span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;url-rewrite&quot;</span><span class="p">)</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-6'>
+  <div class='clearall'></div><div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <h3>Loading packages</h3>
     </div>
@@ -109,10 +122,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
 <span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/src/plugins/gutenberg.lisp&quot;</span><span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-7'>
+  <div class='clearall'></div><div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <h3>Package definition</h3>
     </div>
@@ -125,10 +138,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
 <span class="p">(</span><span class="nb">in-package</span> <span class="ss">:fur-seby</span><span class="p">)</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-8'>
+  <div class='clearall'></div><div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <h3>GUI code</h3>
     </div>
@@ -148,23 +161,12 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
            <span class="p">(</span><span class="nv">widget-show</span> <span class="nv">window</span><span class="p">)))))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-9'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
-      </div>
-      <h3>How to run</h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
   <div class='clearall'></div><div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      <p>(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))</p>
+      <h3>How to run</h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -175,7 +177,7 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>(search-all-sites "Bovary")</p>
+      <p>(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -185,6 +187,17 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>(search-all-sites "Bovary")</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
       </div>
       <p>(run)</p>
     </div>
