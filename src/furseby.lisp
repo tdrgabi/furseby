@@ -1,10 +1,5 @@
 ; **Furseby** is an extensible webscrapper + GUI
- 
-; ## Left To do ##
-; * show some results in gui
-; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
-; * do something about the paths using official clisp syntax
- 
+
 ; ## Introduction ##
 ; Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial.
 
@@ -25,24 +20,22 @@
 ; ### Used libraries ###
 
 (ql:quickload "cl-gtk2-gtk")
-(ql:quickload "drakma")
 (ql:quickload "cl-libxml2")
 (ql:quickload "lisp-unit")
 (ql:quickload "url-rewrite")
 
 ; ### Loading packages ###
 
-(load (compile-file "/home/tudor/git/furseby/src/core.lisp"))
-(load (compile-file "/home/tudor/git/furseby/src/plugins/gutenberg.lisp"))
+(load (compile-file "/home/tudor/git/furseby/master/src/core.lisp"))
+(load (compile-file "/home/tudor/git/furseby/master/src/plugins/gutenberg.lisp"))
 
 ; ### Package definition ###
 
-(defpackage :fur-seby
-  (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
+(defpackage :furseby
+  (:use :cl :gtk :gdk :gobject 
         :furseby.core
         :furseby.plugins.gutenberg))
-
-(in-package :fur-seby)
+(in-package :furseby)
 
 
 ; ### GUI code ###
@@ -50,7 +43,10 @@
 (defun run ()
   (within-main-loop
     (let ((builder (make-instance 'builder)))
-          (builder-add-from-file builder (namestring "/home/tudor/furseby.glade"))
+          (builder-add-from-file builder (namestring (make-pathname :name "furseby"
+                                                                    :type "glade"
+                                                                    :directory '(:relative "gui"))))
+      ; match the controls that matter to vars
       (let ((window (builder-get-object builder "window"))
             (search-field (builder-get-object builder "search-field"))
             (result-label (builder-get-object builder "result-label"))
@@ -58,15 +54,19 @@
             (prev (builder-get-object builder "prev"))
             (copy (builder-get-object builder "copy"))
             (next (builder-get-object builder "next")))
+           ; on window close keep the gtk running. helps with debugging
            (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
            (widget-show window)))))
 
 
 ;### How to run ###
 
-;(load (compile-file "/home/tudor/git/furseby/src/furseby.lisp"))
+(search-all-sites "Bovary")
 
-;(search-all-sites "Bovary")
+(run)
 
-;(run)
-
+; ## Left To do ##
+; * error handling in core
+; * show some results in gui
+; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
+ 

@@ -10,15 +10,14 @@
 
 ; This plugin will search project gutenberg
 (defpackage :furseby.plugins.gutenberg
-  (:use :cl :gtk :gdk :gobject :iter :drakma :html :puri :xpath :iter :url-rewrite
+  (:use :cl :xpath :url-rewrite
         :furseby.core))
 
 (in-package :furseby.plugins.gutenberg)
 
 ; Each plugin will define a function which returns the search url
 (defun get-gutenberg-url (base url)
-  base)
-  ;(concatenate 'string base (url-encode url)))
+  (concatenate 'string base (url-encode url)))
 
 ; helpful functions to extract relevant parts from the node
 (defun get-authors (col)
@@ -37,8 +36,9 @@
   (mapcar (lambda (x) (parse-gutenberg-row (find-list x ".td"))) nodes))
 
 ; And finally, we create a new site, defining a list of xpatsh
-(pushnew (make-site :url "file:///home/tudor/Downloads/results.htm"
+(pushnew (make-site :url "http://www.gutenberg.org/catalog/world/results?title="
                     :xpath '("//table[@class='pgdbfiles']/tr[@class='evenrow']"
                              "//table[@class='pgdbfiles']/tr[@class='oddrow']") 
                     :parse-func #'parse-gutenberg-nodes
                     :url-func #'get-gutenberg-url) *sites*)
+
