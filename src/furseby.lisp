@@ -1,15 +1,16 @@
-; # Extensible webscrapper + GUI #
+; **Furseby** is an extensible webscrapper + GUI
  
-; ## To do ##
-; * make this githubs first page
+; ## Left To do ##
 ; * show some results in gui
 ; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
 ; * do something about the paths using official clisp syntax
  
 ; ## Introduction ##
 ; Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial.
- 
-; ## Short code overview ##
+
+; ## Get the code ##
+; [github.com/tdrgabi/furseby](http://github.com/tdrgabi/furseby)
+;
 ; The main file, furseby.lisp, contains the gui code. It includes the core.lisp file which has all the functions required to post the query, parse and get results and the only plugin, currently available, the gutenberg plugin. The whole idea is that for a new site we add just the plugin, there is no need to write any other code. The plugin will define some xpath query and return the results in a predefined form. Thus the gui can show the results.
 
 ; ### Packages ###

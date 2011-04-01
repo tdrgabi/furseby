@@ -1,8 +1,7 @@
-notangle src/furseby.nw > src/furseby.lisp
-noweave -index -html src/furseby.nw > doc/furseby.html
+#! /bin/bash
 
-notangle src/core.nw > src/core.lisp
-noweave -index -html src/core.nw > doc/core.html
-
-notangle src/plugins/gutenberg.nw > src/plugins/gutenberg.lisp
-noweave -index -html src/plugins/gutenberg.nw > doc/gutenberg.html
+if [ -d master ];
+then 
+    cd master
+fi
+pycco src/plugins/*.lisp src/*.lisp
