@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>core.lisp</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+  
+  <div class='section'>
+    <div class='docs'><h1>core.lisp</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h2><span id="overview" href="overview"> Overview </span></h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>This package will contain all the core functions, to lookup plugins, apply the search query on all of them, gather results and return them to the GUI (furseby) package</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defpackage</span> <span class="ss">:furseby.core</span>
+  <span class="p">(</span><span class="ss">:use</span> <span class="ss">:cl</span> <span class="ss">:gtk</span> <span class="ss">:gdk</span> <span class="ss">:gobject</span> <span class="ss">:iter</span> <span class="ss">:drakma</span> <span class="ss">:html</span> <span class="ss">:puri</span> <span class="ss">:xpath</span> <span class="ss">:iter</span> <span class="ss">:url-rewrite</span><span class="p">)</span>
+  <span class="p">(</span><span class="ss">:export</span> <span class="ss">:search-site</span>
+           <span class="ss">:search-all-sites</span>
+           <span class="ss">:*sites*</span>
+           <span class="ss">:make-site</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">in-package</span> <span class="ss">:furseby.core</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Each site, defined in a plugin, will know it's search url, which xpath to apply to the result, so that only the nodes that match are passed to plugin and which functions to call to parse the nodes</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defstruct</span> <span class="nv">site</span> <span class="nv">url</span> <span class="nv">xpath</span> <span class="nv">parse-func</span> <span class="nv">url-func</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>The global parameter which holds a list of <em>sites</em>. The search result will be applied to all of the current known sites</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*sites*</span> <span class="o">&#39;</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>apply the criteria to a site function</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">search-site</span> <span class="p">(</span><span class="nv">site</span> <span class="nv">criteria</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let*</span> <span class="p">(</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>the full-url will be built, by the site-url-fun defined in plugin. 
+We only provide the criteria and the site will return an url</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="p">(</span><span class="nv">full-url</span> <span class="p">(</span><span class="nb">funcall</span> <span class="p">(</span><span class="nv">site-url-func</span> <span class="nv">site</span><span class="p">)</span> <span class="p">(</span><span class="nv">site-url</span> <span class="nv">site</span><span class="p">)</span> <span class="nv">criteria</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>doc is the html, in xpath object form, that we get once we try to retrieve the url
+<em>TODO</em> some error handling will be needed here</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="p">(</span><span class="nv">doc</span> <span class="p">(</span><span class="nv">parse-html</span> <span class="p">(</span><span class="nv">puri:parse-uri</span> <span class="nv">full-url</span><span class="p">)))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>nodes are the results that we get once we applied the xpaths from plugin</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="p">(</span><span class="nv">nodes</span> <span class="p">(</span><span class="nb">apply</span> <span class="nf">#&#39;</span><span class="nb">append</span> <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">doc</span> <span class="nv">x</span><span class="p">))</span> <span class="p">(</span><span class="nv">site-xpath</span> <span class="nv">site</span><span class="p">)))))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>and finally we get to parse those nodes and return the result</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="p">(</span><span class="nb">funcall</span> <span class="p">(</span><span class="nv">site-parse-func</span> <span class="nv">site</span><span class="p">)</span> <span class="nv">nodes</span><span class="p">)))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>this will only go through all the sites, apply the search-site function and collect the results</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">search-all-sites</span> <span class="p">(</span><span class="nv">criteria</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">site</span><span class="p">)</span> <span class="p">(</span><span class="nv">search-site</span> <span class="nv">site</span> <span class="nv">criteria</span><span class="p">))</span> <span class="vg">*sites*</span><span class="p">))</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
