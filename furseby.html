@@ -18,7 +18,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      <h1>Extensible webscrapper + GUI</h1>
+      <p><strong>Furseby</strong> is an extensible webscrapper + GUI</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre> </pre></div>
@@ -29,10 +29,8 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <h2>To do</h2>
+      <h2>Left To do</h2>
 <ul>
-<li>do something about lisp theme in vim, no folding</li>
-<li>make this githubs first page</li>
 <li>show some results in gui</li>
 <li>research how packages are normally loaded (google.com/codesearch) since quickload takes a while</li>
 <li>do something about the paths using official clisp syntax</li>
@@ -51,7 +49,7 @@
 <p>Everytime I find a site with free, public domain, books, I bookmark it and never visit it again. I will write a new plugin for each site I find, plugin that knows how to download and present the books I'm searching for. Then, I could simply type a search criteria like "Dante" and the search will be performed on all sites. The goal is to make this async, but for now the searches will be done in serial.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre> </pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-3'>
@@ -59,7 +57,8 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <h2>Short code overview</h2>
+      <h2>Get the code</h2>
+<p><a href="http://github.com/tdrgabi/furseby">github.com/tdrgabi/furseby</a></p>
 <p>The main file, furseby.lisp, contains the gui code. It includes the core.lisp file which has all the functions required to post the query, parse and get results and the only plugin, currently available, the gutenberg plugin. The whole idea is that for a new site we add just the plugin, there is no need to write any other code. The plugin will define some xpath query and return the results in a predefined form. Thus the gui can show the results.</p>
     </div>
     <div class='code'>
@@ -74,8 +73,8 @@
       <h3>Packages</h3>
 <ul>
 <li><a href="furseby.html">furseby</a> gui code</li>
-<li><a href="gutenberg.html">furseby.plugins.gutenberg</a> sample plugin to search project gutenberg</li>
 <li><a href="core.html">furseby.core</a> core functions for applying criterias to all sites and collecting results</li>
+<li><a href="gutenberg.html">furseby.plugins.gutenberg</a> sample plugin to search project gutenberg</li>
 </ul>
     </div>
     <div class='code'>
