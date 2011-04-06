@@ -100,8 +100,8 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <h3>Loading packages</h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/master/src/core.lisp&quot;</span><span class="p">))</span>
-<span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;/home/tudor/git/furseby/master/src/plugins/gutenberg.lisp&quot;</span><span class="p">))</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;src/core.lisp&quot;</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">load</span> <span class="p">(</span><span class="nb">compile-file</span> <span class="s">&quot;src/plugins/gutenberg.lisp&quot;</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-7'>
@@ -135,11 +135,12 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p>All the important controls will be global to the package</p>
+      <p>All the important controls will be global to the package, if I use it this way, functions like perform-search are a lot simpler</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*window*</span> <span class="no">nil</span><span class="p">)</span>
-<span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*search-field*</span> <span class="no">nil</span><span class="p">)</span></pre></div>
+<span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*search-field*</span> <span class="no">nil</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*result-view*</span> <span class="no">nil</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-10'>
@@ -174,7 +175,7 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">results</span> <span class="p">(</span><span class="nv">search-all-sites</span> <span class="nv">criteria</span><span class="p">)))</span>
-         <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Results: ~a~%&quot;</span> <span class="nv">results</span><span class="p">))))</span></pre></div>
+      <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Results: &#39;~a&#39;~%&quot;</span> <span class="nv">results</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-13'>
@@ -197,12 +198,12 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
                                                                     <span class="ss">:type</span> <span class="s">&quot;glade&quot;</span>
                                                                     <span class="ss">:directory</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:relative</span> <span class="s">&quot;gui&quot;</span><span class="p">))))</span>
       <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">result-label</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-label&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">result-view</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">prev</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;prev&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">copy</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;copy&quot;</span><span class="p">))</span>
             <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span>
            <span class="p">(</span><span class="nb">setf</span> <span class="vg">*window*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
            <span class="p">(</span><span class="nb">setf</span> <span class="vg">*search-field*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;search-field&quot;</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*result-view*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
            <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*search-field*</span> <span class="s">&quot;key-press-event&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span> <span class="nv">e</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">search-on-enter</span> <span class="nv">e</span><span class="p">)))</span></pre></div>
     </div>
   </div>
@@ -251,9 +252,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       </div>
       <h2>Left To do</h2>
 <ul>
-<li>error handling in core</li>
-<li>show some results in gui</li>
+<li>use tree instead of textview (currently in gui but not used)</li>
+<li>show some results in gui (almost there)</li>
 <li>research how packages are normally loaded (google.com/codesearch) since quickload takes a while</li>
+<li>error handling in core</li>
 </ul>
     </div>
     <div class='code'>
