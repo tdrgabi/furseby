@@ -26,8 +26,8 @@
 
 ; ### Loading packages ###
 
-(load (compile-file "/home/tudor/git/furseby/master/src/core.lisp"))
-(load (compile-file "/home/tudor/git/furseby/master/src/plugins/gutenberg.lisp"))
+(load (compile-file "src/core.lisp"))
+(load (compile-file "src/plugins/gutenberg.lisp"))
 
 ; ### Package definition ###
 
@@ -40,9 +40,10 @@
 
 ; ### GUI code ###
 
-; All the important controls will be global to the package
+; All the important controls will be global to the package, if I use it this way, functions like perform-search are a lot simpler
 (defparameter *window* nil)
 (defparameter *search-field* nil)
+(defparameter *result-view* nil)
 
 ; I will define a function which reads the text from search-field and perform the search on it
 (defun perform-search ()
@@ -51,7 +52,7 @@
     (format t "Will search for: '~a'~%" criteria)
     ; results are the return values, concatenated from all sources
     (let ((results (search-all-sites criteria)))
-         (format t "Results: ~a~%" results))))
+      (format t "Results: '~a'~%" results))))
 
 ; This is the keypress event handler on search-field, will call the search on ENTER (36)
 (defun search-on-enter (event)
@@ -66,12 +67,12 @@
                                                                     :type "glade"
                                                                     :directory '(:relative "gui"))))
       (let ((result-label (builder-get-object builder "result-label"))
-            (result-view (builder-get-object builder "result-view"))
             (prev (builder-get-object builder "prev"))
             (copy (builder-get-object builder "copy"))
             (next (builder-get-object builder "next")))
            (setf *window* (builder-get-object builder "window"))
            (setf *search-field* (builder-get-object builder "search-field"))
+           (setf *result-view* (builder-get-object builder "result-view"))
            (g-signal-connect *search-field* "key-press-event" (lambda (w e) (declare (ignore w)) (search-on-enter e)))
            ; on window close keep the gtk running. helps with debugging
            (g-signal-connect *window* "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
@@ -88,7 +89,8 @@
 (trace gobject:pointer)
 
 ; ## Left To do ##
-; * error handling in core
-; * show some results in gui
+; * use tree instead of textview (currently in gui but not used)
+; * show some results in gui (almost there)
 ; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
+; * error handling in core
 

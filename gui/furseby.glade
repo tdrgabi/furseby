@@ -45,9 +45,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkTextView" id="result-view">
+              <object class="GtkTreeView" id="result-view">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="model">result-data</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -119,4 +120,5 @@
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="result-data"/>
 </interface>
