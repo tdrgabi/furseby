@@ -40,42 +40,55 @@
 
 ; ### GUI code ###
 
+; All the important controls will be global to the package
+(defparameter *window* nil)
+(defparameter *search-field* nil)
+
+; I will define a function which reads the text from search-field and perform the search on it
+(defun perform-search ()
+  ;in criteria we hold the user input
+  (let ((criteria (entry-text *search-field*)))
+    (format t "Will search for: '~a'~%" criteria)
+    ; results are the return values, concatenated from all sources
+    (let ((results (search-all-sites criteria)))
+         (format t "Results: ~a~%" results))))
+
+; This is the keypress event handler on search-field, will call the search on ENTER (36)
+(defun search-on-enter (event)
+   (let ((c (event-key-hardware-keycode event) ))
+        (when (equal c 36)
+              (perform-search))))
+
 (defun run ()
   (within-main-loop
     (let ((builder (make-instance 'builder)))
           (builder-add-from-file builder (namestring (make-pathname :name "furseby"
                                                                     :type "glade"
                                                                     :directory '(:relative "gui"))))
-      ; match the controls that matter to vars
-      (let ((window (builder-get-object builder "window"))
-            (search-field (builder-get-object builder "search-field"))
-            (result-label (builder-get-object builder "result-label"))
+      (let ((result-label (builder-get-object builder "result-label"))
             (result-view (builder-get-object builder "result-view"))
             (prev (builder-get-object builder "prev"))
             (copy (builder-get-object builder "copy"))
             (next (builder-get-object builder "next")))
+           (setf *window* (builder-get-object builder "window"))
+           (setf *search-field* (builder-get-object builder "search-field"))
+           (g-signal-connect *search-field* "key-press-event" (lambda (w e) (declare (ignore w)) (search-on-enter e)))
            ; on window close keep the gtk running. helps with debugging
-           (g-signal-connect window "destroy" (lambda (w) (declare (ignore w)) (leave-gtk-main)))
-           (widget-show window)))))
-
+           (g-signal-connect *window* "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+           (widget-show *window*)))))
 
 ;### How to run ###
 
-; Sample results from a plugin:
+;bellow are repl functions only, currently the only way to test the program
 
-'(("Flaubert, Gustave, 1821-1880 [Author]Schurig, Arthur, 1870-1929 [Translator]"  "Frau Bovary" "/ebooks/15711")
- ("Flaubert, Gustave, 1821-1880 [Author]" "Madame Bovary" "/ebooks/14155")
- ("Flaubert, Gustave, 1821-1880 [Author]Schurig, Arthur, 1870-1929 [Translator]"  "Frau Bovary" "/ebooks/15711")
- ("Flaubert, Gustave, 1821-1880 [Author]" "Madame Bovary" "/ebooks/2413")
- ("Flaubert, Gustave, 1821-1880 [Author]"  "Madame BovaryA Tale of Provincial Life" "/ebooks/27575"))
+(run)
+ 
+(sb-thread:release-foreground)
 
+(trace gobject:pointer)
 
 ; ## Left To do ##
 ; * error handling in core
 ; * show some results in gui
 ; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
 
-;(search-all-sites "Bovary")
-
-;(run)
- 

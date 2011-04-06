@@ -127,12 +127,7 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <h3>GUI code</h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">run</span> <span class="p">()</span>
-  <span class="p">(</span><span class="nv">within-main-loop</span>
-    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">builder</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;builder</span><span class="p">)))</span>
-          <span class="p">(</span><span class="nv">builder-add-from-file</span> <span class="nv">builder</span> <span class="p">(</span><span class="nb">namestring</span> <span class="p">(</span><span class="nb">make-pathname</span> <span class="ss">:name</span> <span class="s">&quot;furseby&quot;</span>
-                                                                    <span class="ss">:type</span> <span class="s">&quot;glade&quot;</span>
-                                                                    <span class="ss">:directory</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:relative</span> <span class="s">&quot;gui&quot;</span><span class="p">))))</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-9'>
@@ -140,16 +135,11 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p>match the controls that matter to vars</p>
+      <p>All the important controls will be global to the package</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">window</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">search-field</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;search-field&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">result-label</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-label&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">result-view</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">prev</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;prev&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">copy</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;copy&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*window*</span> <span class="no">nil</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*search-field*</span> <span class="no">nil</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-10'>
@@ -157,11 +147,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      <p>on window close keep the gtk running. helps with debugging</p>
+      <p>I will define a function which reads the text from search-field and perform the search on it</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="nv">window</span> <span class="s">&quot;destroy&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">leave-gtk-main</span><span class="p">)))</span>
-           <span class="p">(</span><span class="nv">widget-show</span> <span class="nv">window</span><span class="p">)))))</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">perform-search</span> <span class="p">()</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-11'>
@@ -169,10 +158,11 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <h3>How to run</h3>
+      <p>in criteria we hold the user input</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">criteria</span> <span class="p">(</span><span class="nv">entry-text</span> <span class="vg">*search-field*</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Will search for: &#39;~a&#39;~%&quot;</span> <span class="nv">criteria</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-12'>
@@ -180,20 +170,84 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      <p>Sample results from a plugin:</p>
+      <p>results are the return values, concatenated from all sources</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="o">&#39;</span><span class="p">((</span><span class="s">&quot;Flaubert, Gustave, 1821-1880 [Author]Schurig, Arthur, 1870-1929 [Translator]&quot;</span>  <span class="s">&quot;Frau Bovary&quot;</span> <span class="s">&quot;/ebooks/15711&quot;</span><span class="p">)</span>
- <span class="p">(</span><span class="s">&quot;Flaubert, Gustave, 1821-1880 [Author]&quot;</span> <span class="s">&quot;Madame Bovary&quot;</span> <span class="s">&quot;/ebooks/14155&quot;</span><span class="p">)</span>
- <span class="p">(</span><span class="s">&quot;Flaubert, Gustave, 1821-1880 [Author]Schurig, Arthur, 1870-1929 [Translator]&quot;</span>  <span class="s">&quot;Frau Bovary&quot;</span> <span class="s">&quot;/ebooks/15711&quot;</span><span class="p">)</span>
- <span class="p">(</span><span class="s">&quot;Flaubert, Gustave, 1821-1880 [Author]&quot;</span> <span class="s">&quot;Madame Bovary&quot;</span> <span class="s">&quot;/ebooks/2413&quot;</span><span class="p">)</span>
- <span class="p">(</span><span class="s">&quot;Flaubert, Gustave, 1821-1880 [Author]&quot;</span>  <span class="s">&quot;Madame BovaryA Tale of Provincial Life&quot;</span> <span class="s">&quot;/ebooks/27575&quot;</span><span class="p">))</span></pre></div>
+      <div class="highlight"><pre>    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">results</span> <span class="p">(</span><span class="nv">search-all-sites</span> <span class="nv">criteria</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Results: ~a~%&quot;</span> <span class="nv">results</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>This is the keypress event handler on search-field, will call the search on ENTER (36)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">search-on-enter</span> <span class="p">(</span><span class="nv">event</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">c</span> <span class="p">(</span><span class="nv">event-key-hardware-keycode</span> <span class="nv">event</span><span class="p">)</span> <span class="p">))</span>
+        <span class="p">(</span><span class="nb">when</span> <span class="p">(</span><span class="nb">equal</span> <span class="nv">c</span> <span class="mi">36</span><span class="p">)</span>
+              <span class="p">(</span><span class="nv">perform-search</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nb">defun</span> <span class="nv">run</span> <span class="p">()</span>
+  <span class="p">(</span><span class="nv">within-main-loop</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">builder</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;builder</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nv">builder-add-from-file</span> <span class="nv">builder</span> <span class="p">(</span><span class="nb">namestring</span> <span class="p">(</span><span class="nb">make-pathname</span> <span class="ss">:name</span> <span class="s">&quot;furseby&quot;</span>
+                                                                    <span class="ss">:type</span> <span class="s">&quot;glade&quot;</span>
+                                                                    <span class="ss">:directory</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:relative</span> <span class="s">&quot;gui&quot;</span><span class="p">))))</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">result-label</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-label&quot;</span><span class="p">))</span>
+            <span class="p">(</span><span class="nv">result-view</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
+            <span class="p">(</span><span class="nv">prev</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;prev&quot;</span><span class="p">))</span>
+            <span class="p">(</span><span class="nv">copy</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;copy&quot;</span><span class="p">))</span>
+            <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span>
+           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*window*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*search-field*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;search-field&quot;</span><span class="p">))</span>
+           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*search-field*</span> <span class="s">&quot;key-press-event&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span> <span class="nv">e</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">search-on-enter</span> <span class="nv">e</span><span class="p">)))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>on window close keep the gtk running. helps with debugging</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*window*</span> <span class="s">&quot;destroy&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">gtk-main-quit</span><span class="p">)))</span>
+           <span class="p">(</span><span class="nv">widget-show</span> <span class="vg">*window*</span><span class="p">)))))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <h3>How to run</h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>bellow are repl functions only, currently the only way to test the program</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nv">run</span><span class="p">)</span>
+ 
+<span class="p">(</span><span class="nv">sb-thread:release-foreground</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nb">trace</span> <span class="nv">gobject:pointer</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
       <h2>Left To do</h2>
 <ul>
@@ -204,30 +258,6 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div><div class='section' id='section-14'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
-      </div>
-      <p>(search-all-sites "Bovary")</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div><div class='section' id='section-15'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
-      </div>
-      <p>(run)</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre> 
-
-</pre></div>
     </div>
   </div>
   <div class='clearall'></div>
