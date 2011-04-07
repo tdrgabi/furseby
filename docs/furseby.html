@@ -259,7 +259,9 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">search-on-enter</span> <span class="p">(</span><span class="nv">event</span><span class="p">)</span>
    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">c</span> <span class="p">(</span><span class="nv">event-key-hardware-keycode</span> <span class="nv">event</span><span class="p">)</span> <span class="p">))</span>
         <span class="p">(</span><span class="nb">when</span> <span class="p">(</span><span class="nb">equal</span> <span class="nv">c</span> <span class="mi">36</span><span class="p">)</span>
-              <span class="p">(</span><span class="nv">perform-search</span><span class="p">))))</span></pre></div>
+              <span class="p">(</span><span class="nv">clear-current-results</span><span class="p">)</span>
+              <span class="p">(</span><span class="nv">perform-search</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;~a~%&quot;</span> <span class="s">&quot;Done!&quot;</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-18'>
@@ -267,16 +269,28 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class='octowrap'>
         <a class='octothorpe' href='#section-18'>#</a>
       </div>
-      <p>I will define a function which reads the text from search-field and perform the search on it</p>
+      <p>Before we do another search we will clean the current results</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">perform-search</span> <span class="p">()</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">clear-current-results</span> <span class="p">()</span>
+  <span class="p">(</span><span class="nv">list-store-clear</span> <span class="vg">*result-data*</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>I will define a function which reads the text from search-field and perform the search on it</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">perform-search</span> <span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>in criteria we hold the user input</p>
     </div>
@@ -285,10 +299,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
     <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Will search for: &#39;~a&#39;~%&quot;</span> <span class="nv">criteria</span><span class="p">)</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-20'>
+  <div class='clearall'></div><div class='section' id='section-21'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
+        <a class='octothorpe' href='#section-21'>#</a>
       </div>
       <p>results are the return values, concatenated from all sources</p>
     </div>
@@ -297,10 +311,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
          <span class="p">(</span><span class="nv">add-results-to-tree-view</span> <span class="nv">results</span><span class="p">))))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-21'>
+  <div class='clearall'></div><div class='section' id='section-22'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <p>get the list of books and add them to the three</p>
     </div>
@@ -309,10 +323,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
   <span class="p">(</span><span class="nb">mapcar</span> <span class="nf">#&#39;</span><span class="nv">add-result-from-site</span> <span class="nv">results-from-all-sites</span><span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-22'>
+  <div class='clearall'></div><div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p>this will get all the result from 1 site and add it to the tree model</p>
     </div>
@@ -325,10 +339,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
                                                  <span class="p">(</span><span class="nv">furseby.core::book-url</span> <span class="nv">item</span><span class="p">)))</span> <span class="nv">results-from-site</span><span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-23'>
+  <div class='clearall'></div><div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       <h3>How to run</h3>
     </div>
@@ -336,28 +350,27 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class="highlight"><pre></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-24'>
+  <div class='clearall'></div><div class='section' id='section-25'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
+        <a class='octothorpe' href='#section-25'>#</a>
       </div>
       <p>bellow are repl functions only, currently the only way to test the program</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nv">run</span><span class="p">)</span>
  
-<span class="p">(</span><span class="nv">sb-thread:release-foreground</span><span class="p">)</span>
-
-<span class="p">(</span><span class="nb">trace</span> <span class="nv">list-store-insert-with-values</span><span class="p">)</span></pre></div>
+<span class="p">(</span><span class="nv">sb-thread:release-foreground</span><span class="p">)</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-25'>
+  <div class='clearall'></div><div class='section' id='section-26'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-25'>#</a>
+        <a class='octothorpe' href='#section-26'>#</a>
       </div>
       <h2>Left To do</h2>
 <ul>
+<li>column sizes should not be dinamyc</li>
 <li>error handling in core</li>
 <li>research how packages are normally loaded (google.com/codesearch) since quickload takes a while</li>
 </ul>
