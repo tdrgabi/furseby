@@ -92,7 +92,9 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">parse-gutenberg-row</span> <span class="p">(</span><span class="nv">row</span><span class="p">)</span>
-  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">get-authors</span> <span class="p">(</span><span class="nb">third</span> <span class="nv">row</span><span class="p">))</span> <span class="p">(</span><span class="nv">get-title</span> <span class="p">(</span><span class="nb">fourth</span> <span class="nv">row</span><span class="p">))</span> <span class="p">(</span><span class="nv">get-link</span> <span class="p">(</span><span class="nb">fourth</span> <span class="nv">row</span><span class="p">))))</span></pre></div>
+  <span class="p">(</span><span class="nv">make-book</span> <span class="ss">:author</span> <span class="p">(</span><span class="nv">get-authors</span> <span class="p">(</span><span class="nb">third</span> <span class="nv">row</span><span class="p">))</span> 
+             <span class="ss">:title</span> <span class="p">(</span><span class="nv">get-title</span> <span class="p">(</span><span class="nb">fourth</span> <span class="nv">row</span><span class="p">))</span> 
+             <span class="ss">:url</span> <span class="p">(</span><span class="nv">get-link</span> <span class="p">(</span><span class="nb">fourth</span> <span class="nv">row</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-6'>
