@@ -93,7 +93,13 @@
 (defun search-on-enter (event)
    (let ((c (event-key-hardware-keycode event) ))
         (when (equal c 36)
-              (perform-search))))
+              (clear-current-results)
+              (perform-search)
+              (format t "~a~%" "Done!"))))
+
+; Before we do another search we will clean the current results
+(defun clear-current-results ()
+  (list-store-clear *result-data*))
 
 ; I will define a function which reads the text from search-field and perform the search on it
 (defun perform-search ()
@@ -124,9 +130,8 @@
  
 (sb-thread:release-foreground)
 
-(trace list-store-insert-with-values)
-
 ; ## Left To do ##
+; * column sizes should not be dinamyc
 ; * error handling in core
 ; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
 
