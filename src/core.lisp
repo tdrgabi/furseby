@@ -7,11 +7,15 @@
   (:export :search-site
            :search-all-sites
            :*sites*
-           :make-site))
+           :make-site
+           :make-book))
 (in-package :furseby.core)
 
 ; Each site, defined in a plugin, will know it's search url, which xpath to apply to the result, so that only the nodes that match are passed to plugin and which functions to call to parse the nodes
 (defstruct site url xpath parse-func url-func)
+
+; Each found result will be of type book
+(defstruct book author title url)
 
 ; The global parameter which holds a list of *sites*. The search result will be applied to all of the current known sites
 (defparameter *sites* '())
@@ -34,4 +38,3 @@
 ; this will only go through all the sites, apply the search-site function and collect the results
 (defun search-all-sites (criteria)
   (mapcar (lambda (site) (search-site site criteria)) *sites*))
-

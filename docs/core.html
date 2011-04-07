@@ -37,7 +37,8 @@
   <span class="p">(</span><span class="ss">:export</span> <span class="ss">:search-site</span>
            <span class="ss">:search-all-sites</span>
            <span class="ss">:*sites*</span>
-           <span class="ss">:make-site</span><span class="p">))</span>
+           <span class="ss">:make-site</span>
+           <span class="ss">:make-book</span><span class="p">))</span>
 <span class="p">(</span><span class="nb">in-package</span> <span class="ss">:furseby.core</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -57,16 +58,27 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <p>The global parameter which holds a list of <em>sites</em>. The search result will be applied to all of the current known sites</p>
+      <p>Each found result will be of type book</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*sites*</span> <span class="o">&#39;</span><span class="p">())</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defstruct</span> <span class="nv">book</span> <span class="nv">author</span> <span class="nv">title</span> <span class="nv">url</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>The global parameter which holds a list of <em>sites</em>. The search result will be applied to all of the current known sites</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*sites*</span> <span class="o">&#39;</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>apply the criteria to a site function</p>
     </div>
@@ -75,10 +87,10 @@
   <span class="p">(</span><span class="k">let*</span> <span class="p">(</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-5'>
+  <div class='clearall'></div><div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>the full-url will be built, by the site-url-fun defined in plugin. 
 We only provide the criteria and the site will return an url</p>
@@ -87,10 +99,10 @@ We only provide the criteria and the site will return an url</p>
       <div class="highlight"><pre>        <span class="p">(</span><span class="nv">full-url</span> <span class="p">(</span><span class="nb">funcall</span> <span class="p">(</span><span class="nv">site-url-func</span> <span class="nv">site</span><span class="p">)</span> <span class="p">(</span><span class="nv">site-url</span> <span class="nv">site</span><span class="p">)</span> <span class="nv">criteria</span><span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-6'>
+  <div class='clearall'></div><div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>doc is the html, in xpath object form, that we get once we try to retrieve the url
 <em>TODO</em> some error handling will be needed here</p>
@@ -99,10 +111,10 @@ We only provide the criteria and the site will return an url</p>
       <div class="highlight"><pre>        <span class="p">(</span><span class="nv">doc</span> <span class="p">(</span><span class="nv">parse-html</span> <span class="p">(</span><span class="nv">puri:parse-uri</span> <span class="nv">full-url</span><span class="p">)))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-7'>
+  <div class='clearall'></div><div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>nodes are the results that we get once we applied the xpaths from plugin</p>
     </div>
@@ -110,10 +122,10 @@ We only provide the criteria and the site will return an url</p>
       <div class="highlight"><pre>        <span class="p">(</span><span class="nv">nodes</span> <span class="p">(</span><span class="nb">apply</span> <span class="nf">#&#39;</span><span class="nb">append</span> <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">doc</span> <span class="nv">x</span><span class="p">))</span> <span class="p">(</span><span class="nv">site-xpath</span> <span class="nv">site</span><span class="p">)))))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-8'>
+  <div class='clearall'></div><div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p>and finally we get to parse those nodes and return the result</p>
     </div>
@@ -121,10 +133,10 @@ We only provide the criteria and the site will return an url</p>
       <div class="highlight"><pre>  <span class="p">(</span><span class="nb">funcall</span> <span class="p">(</span><span class="nv">site-parse-func</span> <span class="nv">site</span><span class="p">)</span> <span class="nv">nodes</span><span class="p">)</span> <span class="p">))</span></pre></div>
     </div>
   </div>
-  <div class='clearall'></div><div class='section' id='section-9'>
+  <div class='clearall'></div><div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>this will only go through all the sites, apply the search-site function and collect the results</p>
     </div>

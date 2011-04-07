@@ -2,6 +2,16 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkListStore" id="result-data">
+    <columns>
+      <!-- column-name Author -->
+      <column type="gchararray"/>
+      <!-- column-name Title -->
+      <column type="gchararray"/>
+      <!-- column-name Link -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="window">
     <property name="width_request">400</property>
     <property name="height_request">800</property>
@@ -49,6 +59,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="model">result-data</property>
+                <property name="enable_grid_lines">both</property>
+                <property name="enable_tree_lines">True</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -120,5 +132,4 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="result-data"/>
 </interface>

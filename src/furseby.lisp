@@ -44,6 +44,56 @@
 (defparameter *window* nil)
 (defparameter *search-field* nil)
 (defparameter *result-view* nil)
+(defparameter *result-data* nil)
+
+; The main function will read the gui/furseby.glade file
+(defun run ()
+  (within-main-loop
+    (let ((builder (make-instance 'builder)))
+          (builder-add-from-file builder (namestring (make-pathname :name "furseby"
+                                                                    :type "glade"
+                                                                    :directory '(:relative "gui"))))
+      ;load less important controls in temporary vars
+      (let ((result-label (builder-get-object builder "result-label"))
+            (prev (builder-get-object builder "prev"))
+            (copy (builder-get-object builder "copy"))
+            (next (builder-get-object builder "next")))
+           ; the important ones are loaded in global vars
+           (setf *window* (builder-get-object builder "window"))
+           (setf *search-field* (builder-get-object builder "search-field"))
+           (setf *result-view* (builder-get-object builder "result-view"))
+           (setf *result-data* (builder-get-object builder "result-data"))
+           ;the tree view wants it's columns initialised in code not in glade
+           (init-tree-columns)
+           ;the hook to act on keypress, because we want to search on ENTER 
+           (g-signal-connect *search-field* "key-press-event" (lambda (w e) (declare (ignore w)) (search-on-enter e)))
+           ; on window close keep the gtk running. helps with debugging
+           (g-signal-connect *window* "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
+           (widget-show *window*)))))
+
+; initialising the trees columns from code since I couldn't find a way to do it from the editor
+(defun init-tree-columns ()
+  (let ((column (make-instance 'tree-view-column :title "Artist" :sort-column-id 0))
+        (renderer (make-instance 'cell-renderer-text)))
+        (tree-view-column-pack-start column renderer)
+        (tree-view-column-add-attribute column renderer "text" 0)
+        (tree-view-append-column *result-view* column))
+  (let ((column (make-instance 'tree-view-column :title "Title" :sort-column-id 1))
+        (renderer (make-instance 'cell-renderer-text)))
+        (tree-view-column-pack-start column renderer)
+        (tree-view-column-add-attribute column renderer "text" 1)
+        (tree-view-append-column *result-view* column))
+  (let ((column (make-instance 'tree-view-column :title "Link" :sort-column-id 2))
+        (renderer (make-instance 'cell-renderer-text)))
+        (tree-view-column-pack-start column renderer)
+        (tree-view-column-add-attribute column renderer "text" 2)
+        (tree-view-append-column *result-view* column)))
+
+; This is the keypress event handler on search-field, will call the search on ENTER (36)
+(defun search-on-enter (event)
+   (let ((c (event-key-hardware-keycode event) ))
+        (when (equal c 36)
+              (perform-search))))
 
 ; I will define a function which reads the text from search-field and perform the search on it
 (defun perform-search ()
@@ -52,31 +102,19 @@
     (format t "Will search for: '~a'~%" criteria)
     ; results are the return values, concatenated from all sources
     (let ((results (search-all-sites criteria)))
-      (format t "Results: '~a'~%" results))))
+         (add-results-to-tree-view results))))
 
-; This is the keypress event handler on search-field, will call the search on ENTER (36)
-(defun search-on-enter (event)
-   (let ((c (event-key-hardware-keycode event) ))
-        (when (equal c 36)
-              (perform-search))))
+;get the list of books and add them to the three
+(defun add-results-to-tree-view (results-from-all-sites)
+  (mapcar #'add-result-from-site results-from-all-sites))
 
-(defun run ()
-  (within-main-loop
-    (let ((builder (make-instance 'builder)))
-          (builder-add-from-file builder (namestring (make-pathname :name "furseby"
-                                                                    :type "glade"
-                                                                    :directory '(:relative "gui"))))
-      (let ((result-label (builder-get-object builder "result-label"))
-            (prev (builder-get-object builder "prev"))
-            (copy (builder-get-object builder "copy"))
-            (next (builder-get-object builder "next")))
-           (setf *window* (builder-get-object builder "window"))
-           (setf *search-field* (builder-get-object builder "search-field"))
-           (setf *result-view* (builder-get-object builder "result-view"))
-           (g-signal-connect *search-field* "key-press-event" (lambda (w e) (declare (ignore w)) (search-on-enter e)))
-           ; on window close keep the gtk running. helps with debugging
-           (g-signal-connect *window* "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
-           (widget-show *window*)))))
+;this will get all the result from 1 site and add it to the tree model
+(defun add-result-from-site (results-from-site)
+  (mapcar (lambda (item) 
+                  (list-store-insert-with-values *result-data* -1 
+                                                 (furseby.core::book-author item)
+                                                 (furseby.core::book-title item)
+                                                 (furseby.core::book-url item))) results-from-site))
 
 ;### How to run ###
 
@@ -86,11 +124,9 @@
  
 (sb-thread:release-foreground)
 
-(trace gobject:pointer)
+(trace list-store-insert-with-values)
 
 ; ## Left To do ##
-; * use tree instead of textview (currently in gui but not used)
-; * show some results in gui (almost there)
-; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
 ; * error handling in core
+; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
 

@@ -28,7 +28,9 @@
 
 ; This is a helpful function for the nodes parsing, it can parse one row
 (defun parse-gutenberg-row (row)
-  (list (get-authors (third row)) (get-title (fourth row)) (get-link (fourth row))))
+  (make-book :author (get-authors (third row)) 
+             :title (get-title (fourth row)) 
+             :url (get-link (fourth row))))
 
 ; A function which will parse the nodes it receives from the search result and combine the results
 (defun parse-gutenberg-nodes (nodes)
