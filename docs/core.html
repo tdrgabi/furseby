@@ -119,7 +119,7 @@ We only provide the criteria and the site will return an url</p>
       <p>nodes are the results that we get once we applied the xpaths from plugin</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="p">(</span><span class="nv">nodes</span> <span class="p">(</span><span class="nb">apply</span> <span class="nf">#&#39;</span><span class="nb">append</span> <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">doc</span> <span class="nv">x</span><span class="p">))</span> <span class="p">(</span><span class="nv">site-xpath</span> <span class="nv">site</span><span class="p">)))))</span></pre></div>
+      <div class="highlight"><pre>        <span class="p">(</span><span class="nv">nodes</span> <span class="p">(</span><span class="nb">apply</span> <span class="nf">#&#39;</span><span class="nb">append</span> <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">apply-xpath-to-document</span> <span class="nv">full-url</span> <span class="nv">doc</span> <span class="nv">x</span><span class="p">))</span> <span class="p">(</span><span class="nv">site-xpath</span> <span class="nv">site</span><span class="p">)))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-9'>
@@ -130,7 +130,14 @@ We only provide the criteria and the site will return an url</p>
       <p>and finally we get to parse those nodes and return the result</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>  <span class="p">(</span><span class="nb">funcall</span> <span class="p">(</span><span class="nv">site-parse-func</span> <span class="nv">site</span><span class="p">)</span> <span class="nv">nodes</span><span class="p">)</span> <span class="p">))</span></pre></div>
+      <div class="highlight"><pre>  <span class="p">(</span><span class="nb">funcall</span> <span class="p">(</span><span class="nv">site-parse-func</span> <span class="nv">site</span><span class="p">)</span> <span class="nv">nodes</span><span class="p">)</span> <span class="p">))</span>
+
+<span class="p">(</span><span class="nb">defun</span> <span class="nv">apply-xpath-to-document</span> <span class="p">(</span><span class="nv">url</span> <span class="nv">doc</span> <span class="nv">xpath</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">equal</span> <span class="no">nil</span> <span class="nv">doc</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">progn</span> 
+        <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;~a~a~a~a~%&quot;</span> <span class="s">&quot;The document from &quot;</span> <span class="nv">url</span> <span class="s">&quot; is nil, will not apply xpath nodes:&quot;</span> <span class="nv">xpath</span><span class="p">)</span>
+        <span class="no">nil</span><span class="p">)</span>
+      <span class="p">(</span><span class="nv">find-list</span> <span class="nv">doc</span> <span class="nv">xpath</span><span class="p">)))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-10'>

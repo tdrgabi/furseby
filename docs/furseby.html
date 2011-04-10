@@ -115,7 +115,9 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defpackage</span> <span class="ss">:furseby</span>
   <span class="p">(</span><span class="ss">:use</span> <span class="ss">:cl</span> <span class="ss">:gtk</span> <span class="ss">:gdk</span> <span class="ss">:gobject</span> 
         <span class="ss">:furseby.core</span>
-        <span class="ss">:furseby.plugins.gutenberg</span><span class="p">))</span>
+        <span class="ss">:furseby.plugins.gutenberg</span><span class="p">)</span>
+  <span class="p">(</span><span class="ss">:export</span> <span class="ss">:run</span><span class="p">))</span>
+
 <span class="p">(</span><span class="nb">in-package</span> <span class="ss">:furseby</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -153,11 +155,16 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">run</span> <span class="p">()</span>
+  <span class="p">(</span><span class="k">progn</span>
+  <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Starting furseby...~%&quot;</span><span class="p">)</span>
   <span class="p">(</span><span class="nv">within-main-loop</span>
+    <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Inside main loop~%&quot;</span><span class="p">)</span>
     <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">builder</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;builder</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Builder object created ~a~%&quot;</span> <span class="nv">builder</span><span class="p">)</span>
           <span class="p">(</span><span class="nv">builder-add-from-file</span> <span class="nv">builder</span> <span class="p">(</span><span class="nb">namestring</span> <span class="p">(</span><span class="nb">make-pathname</span> <span class="ss">:name</span> <span class="s">&quot;furseby&quot;</span>
                                                                     <span class="ss">:type</span> <span class="s">&quot;glade&quot;</span>
-                                                                    <span class="ss">:directory</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:relative</span> <span class="s">&quot;gui&quot;</span><span class="p">))))</span></pre></div>
+                                                                    <span class="ss">:directory</span> <span class="o">&#39;</span><span class="p">(</span><span class="ss">:relative</span> <span class="s">&quot;gui&quot;</span><span class="p">))))</span>
+          <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;Builder object loaded ~a~%&quot;</span> <span class="nv">builder</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-11'>
@@ -168,10 +175,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <p>load less important controls in temporary vars</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">result-label</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-label&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">prev</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;prev&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">copy</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;copy&quot;</span><span class="p">))</span>
-            <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span></pre></div>
+      <div class="highlight"><pre>          <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">result-label</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-label&quot;</span><span class="p">))</span>
+                <span class="p">(</span><span class="nv">prev</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;prev&quot;</span><span class="p">))</span>
+                <span class="p">(</span><span class="nv">copy</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;copy&quot;</span><span class="p">))</span>
+                <span class="p">(</span><span class="nv">next</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;next&quot;</span><span class="p">)))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-12'>
@@ -182,10 +189,10 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <p>the important ones are loaded in global vars</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*window*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
-           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*search-field*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;search-field&quot;</span><span class="p">))</span>
-           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*result-view*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
-           <span class="p">(</span><span class="nb">setf</span> <span class="vg">*result-data*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-data&quot;</span><span class="p">))</span></pre></div>
+      <div class="highlight"><pre>               <span class="p">(</span><span class="nb">setf</span> <span class="vg">*window*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;window&quot;</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">setf</span> <span class="vg">*search-field*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;search-field&quot;</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">setf</span> <span class="vg">*result-view*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-view&quot;</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">setf</span> <span class="vg">*result-data*</span> <span class="p">(</span><span class="nv">builder-get-object</span> <span class="nv">builder</span> <span class="s">&quot;result-data&quot;</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-13'>
@@ -196,7 +203,7 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <p>the tree view wants it's columns initialised in code not in glade</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>           <span class="p">(</span><span class="nv">init-tree-columns</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>               <span class="p">(</span><span class="nv">init-tree-columns</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-14'>
@@ -207,7 +214,7 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <p>the hook to act on keypress, because we want to search on ENTER </p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*search-field*</span> <span class="s">&quot;key-press-event&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span> <span class="nv">e</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">search-on-enter</span> <span class="nv">e</span><span class="p">)))</span></pre></div>
+      <div class="highlight"><pre>               <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*search-field*</span> <span class="s">&quot;key-press-event&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span> <span class="nv">e</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">search-on-enter</span> <span class="nv">e</span><span class="p">)))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-15'>
@@ -218,8 +225,14 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <p>on window close keep the gtk running. helps with debugging</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>           <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*window*</span> <span class="s">&quot;destroy&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">gtk-main-quit</span><span class="p">)))</span>
-           <span class="p">(</span><span class="nv">widget-show</span> <span class="vg">*window*</span><span class="p">)))))</span></pre></div>
+      <div class="highlight"><pre>               <span class="p">(</span><span class="nv">g-signal-connect</span> <span class="vg">*window*</span> <span class="s">&quot;destroy&quot;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">w</span><span class="p">)</span> <span class="p">(</span><span class="k">declare</span> <span class="p">(</span><span class="k">ignore</span> <span class="nv">w</span><span class="p">))</span> <span class="p">(</span><span class="nv">gtk-main-quit</span><span class="p">)))</span>
+               <span class="p">(</span><span class="nv">widget-show</span> <span class="vg">*window*</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nv">sb-thread:join-thread</span> 
+    <span class="p">(</span><span class="nb">first</span> 
+     <span class="p">(</span><span class="nb">remove-if-not</span> 
+      <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">equal</span> <span class="p">(</span><span class="nv">sb-thread::thread-name</span> <span class="nv">x</span><span class="p">)</span> <span class="s">&quot;cl-gtk2 main thread&quot;</span><span class="p">))</span> 
+      <span class="p">(</span><span class="nv">sb-thread:list-all-threads</span><span class="p">))))</span>
+  <span class="mi">1</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-16'>
@@ -235,6 +248,7 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
         <span class="p">(</span><span class="nv">renderer</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;cell-renderer-text</span><span class="p">)))</span>
         <span class="p">(</span><span class="nv">tree-view-column-pack-start</span> <span class="nv">column</span> <span class="nv">renderer</span><span class="p">)</span>
         <span class="p">(</span><span class="nv">tree-view-column-add-attribute</span> <span class="nv">column</span> <span class="nv">renderer</span> <span class="s">&quot;text&quot;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="nv">tree-view-column-add-attribute</span> <span class="nv">column</span> <span class="nv">renderer</span> <span class="s">&quot;width&quot;</span> <span class="mi">10</span><span class="p">)</span>
         <span class="p">(</span><span class="nv">tree-view-append-column</span> <span class="vg">*result-view*</span> <span class="nv">column</span><span class="p">))</span>
   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">column</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;tree-view-column</span> <span class="ss">:title</span> <span class="s">&quot;Title&quot;</span> <span class="ss">:sort-column-id</span> <span class="mi">1</span><span class="p">))</span>
         <span class="p">(</span><span class="nv">renderer</span> <span class="p">(</span><span class="nb">make-instance</span> <span class="ss">&#39;cell-renderer-text</span><span class="p">)))</span>
@@ -336,7 +350,12 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
                   <span class="p">(</span><span class="nv">list-store-insert-with-values</span> <span class="vg">*result-data*</span> <span class="mi">-1</span> 
                                                  <span class="p">(</span><span class="nv">furseby.core::book-author</span> <span class="nv">item</span><span class="p">)</span>
                                                  <span class="p">(</span><span class="nv">furseby.core::book-title</span> <span class="nv">item</span><span class="p">)</span>
-                                                 <span class="p">(</span><span class="nv">furseby.core::book-url</span> <span class="nv">item</span><span class="p">)))</span> <span class="nv">results-from-site</span><span class="p">))</span></pre></div>
+                                                 <span class="p">(</span><span class="nv">furseby.core::book-url</span> <span class="nv">item</span><span class="p">)))</span> <span class="nv">results-from-site</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">in-package</span> <span class="nv">COMMON-LISP-USER</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nb">defun</span> <span class="nv">main</span> <span class="p">()</span>
+  <span class="p">(</span><span class="nv">furseby::run</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-24'>
@@ -358,15 +377,35 @@ The gui was built with some GUI designer, which outputs .glade files. Then, usin
       <p>bellow are repl functions only, currently the only way to test the program</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nv">run</span><span class="p">)</span>
- 
-<span class="p">(</span><span class="nv">sb-thread:release-foreground</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-26'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>(run)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>(sb-thread:release-foreground)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div><div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
       <h2>Left To do</h2>
 <ul>

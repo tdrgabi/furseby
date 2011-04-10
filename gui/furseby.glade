@@ -86,41 +86,15 @@
             <property name="visible">True</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="prev">
-                <property name="label">gtk-go-back</property>
+              <object class="GtkButton" id="copy">
+                <property name="label" translatable="yes">Copy Download URL</property>
                 <property name="height_request">30</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
               </object>
               <packing>
                 <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="copy">
-                <property name="label" translatable="yes">Copy URL</property>
-                <property name="height_request">30</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="next">
-                <property name="label">gtk-go-forward</property>
-                <property name="height_request">30</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
               </packing>
             </child>
           </object>

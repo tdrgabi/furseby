@@ -30,9 +30,16 @@
         ; *TODO* some error handling will be needed here
         (doc (parse-html (puri:parse-uri full-url)))
         ; nodes are the results that we get once we applied the xpaths from plugin
-        (nodes (apply #'append (mapcar (lambda (x) (find-list doc x)) (site-xpath site)))))
+        (nodes (apply #'append (mapcar (lambda (x) (apply-xpath-to-document full-url doc x)) (site-xpath site)))))
   ; and finally we get to parse those nodes and return the result
   (funcall (site-parse-func site) nodes) ))
+
+(defun apply-xpath-to-document (url doc xpath)
+  (if (equal nil doc)
+      (progn 
+        (format t "~a~a~a~a~%" "The document from " url " is nil, will not apply xpath nodes:" xpath)
+        nil)
+      (find-list doc xpath)))
 
 
 ; this will only go through all the sites, apply the search-site function and collect the results
