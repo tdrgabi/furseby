@@ -64,7 +64,9 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="p">(</span><span class="nb">defun</span> <span class="nv">get-gutenberg-url</span> <span class="p">(</span><span class="nv">base</span> <span class="nv">url</span><span class="p">)</span>
-  <span class="p">(</span><span class="nb">concatenate</span> <span class="ss">&#39;string</span> <span class="nv">base</span> <span class="p">(</span><span class="nv">url-encode</span> <span class="nv">url</span><span class="p">)))</span></pre></div>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">equal</span> <span class="nv">furseby.core:*offline-dev*</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="nv">base</span>
+      <span class="p">(</span><span class="nb">concatenate</span> <span class="ss">&#39;string</span> <span class="nv">base</span> <span class="p">(</span><span class="nv">url-encode</span> <span class="nv">url</span><span class="p">))))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-4'>
@@ -116,7 +118,12 @@
       <p>we take all the columns for each row in find-list, like "author" "link" "text"</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>  <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">parse-gutenberg-row</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">x</span> <span class="s">&quot;td&quot;</span><span class="p">)))</span> <span class="nv">nodes</span><span class="p">))</span></pre></div>
+      <div class="highlight"><pre>  <span class="p">(</span><span class="nb">mapcar</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nv">parse-gutenberg-row</span> <span class="p">(</span><span class="nv">find-list</span> <span class="nv">x</span> <span class="s">&quot;td&quot;</span><span class="p">)))</span> <span class="nv">nodes</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">defun</span> <span class="nv">get-url</span> <span class="p">()</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">equal</span> <span class="nv">furseby.core:*offline-dev*</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="s">&quot;samples/gutenberg.html&quot;</span>
+      <span class="s">&quot;http://www.gutenberg.org/catalog/world/results?title=&quot;</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-8'>
@@ -127,7 +134,7 @@
       <p>And finally, we create a new site, defining a list of xpatsh</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="p">(</span><span class="nb">pushnew</span> <span class="p">(</span><span class="nv">make-site</span> <span class="ss">:url</span> <span class="s">&quot;http://www.gutenberg.org/catalog/world/results?title=&quot;</span></pre></div>
+      <div class="highlight"><pre><span class="p">(</span><span class="nb">pushnew</span> <span class="p">(</span><span class="nv">make-site</span> <span class="ss">:url</span> <span class="p">(</span><span class="nv">get-url</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div><div class='section' id='section-9'>
@@ -138,8 +145,8 @@
       <p>we extract a table with class pgdbfiles, and from him take all tr with class evenrow and oddrow</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>                    <span class="ss">:xpath</span> <span class="o">&#39;</span><span class="p">(</span><span class="s">&quot;//table[@class=&#39;pgdbfiles&#39;]/tr[@class=&#39;evenrow&#39;]&quot;</span>
-                             <span class="s">&quot;//table[@class=&#39;pgdbfiles&#39;]/tr[@class=&#39;oddrow&#39;]&quot;</span><span class="p">)</span> 
+      <div class="highlight"><pre>                    <span class="ss">:xpath</span> <span class="o">&#39;</span><span class="p">(</span><span class="s">&quot;//table[@class=&#39;pgdbfiles&#39;]/tbody/tr[@class=&#39;evenrow&#39;]&quot;</span>
+                             <span class="s">&quot;//table[@class=&#39;pgdbfiles&#39;]/tbody/tr[@class=&#39;oddrow&#39;]&quot;</span><span class="p">)</span> 
                     <span class="ss">:parse-func</span> <span class="nf">#&#39;</span><span class="nv">parse-gutenberg-nodes</span>
                     <span class="ss">:url-func</span> <span class="nf">#&#39;</span><span class="nv">get-gutenberg-url</span><span class="p">)</span> <span class="vg">*sites*</span><span class="p">)</span>
 
