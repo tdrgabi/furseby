@@ -16,7 +16,9 @@
 
 ; Each plugin will define a function which returns the search url
 (defun get-gutenberg-url (base url)
-  (concatenate 'string base (url-encode url)))
+  (if (equal furseby.core:*offline-dev* 1)
+      base
+      (concatenate 'string base (url-encode url))))
 
 ; helpful functions to extract relevant parts from the node
 (defun get-authors (col)
@@ -37,11 +39,16 @@
   ; we take all the columns for each row in find-list, like "author" "link" "text"
   (mapcar (lambda (x) (parse-gutenberg-row (find-list x "td"))) nodes))
 
+(defun get-url ()
+  (if (equal furseby.core:*offline-dev* 1)
+      "samples/gutenberg.html"
+      "http://www.gutenberg.org/catalog/world/results?title="))
+
 ; And finally, we create a new site, defining a list of xpatsh
-(pushnew (make-site :url "http://www.gutenberg.org/catalog/world/results?title="
+(pushnew (make-site :url (get-url)
                     ;we extract a table with class pgdbfiles, and from him take all tr with class evenrow and oddrow
-                    :xpath '("//table[@class='pgdbfiles']/tr[@class='evenrow']"
-                             "//table[@class='pgdbfiles']/tr[@class='oddrow']") 
+                    :xpath '("//table[@class='pgdbfiles']/tbody/tr[@class='evenrow']"
+                             "//table[@class='pgdbfiles']/tbody/tr[@class='oddrow']") 
                     :parse-func #'parse-gutenberg-nodes
                     :url-func #'get-gutenberg-url) *sites*)
 

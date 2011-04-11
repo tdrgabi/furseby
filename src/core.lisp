@@ -7,9 +7,11 @@
   (:export :search-site
            :search-all-sites
            :*sites*
+           :*offline-dev*
            :make-site
            :make-book))
 (in-package :furseby.core)
+(defparameter *offline-dev* 1)
 
 ; Each site, defined in a plugin, will know it's search url, which xpath to apply to the result, so that only the nodes that match are passed to plugin and which functions to call to parse the nodes
 (defstruct site url xpath parse-func url-func)

@@ -15,7 +15,9 @@
   <object class="GtkWindow" id="window">
     <property name="width_request">400</property>
     <property name="height_request">800</property>
-    <property name="title" translatable="yes">F&#xFC;rSeby</property>
+    <property name="title" translatable="yes">FurSeby</property>
+    <property name="default_width">800</property>
+    <property name="default_height">500</property>
     <child>
       <object class="GtkVBox" id="box">
         <property name="visible">True</property>
@@ -86,7 +88,7 @@
             <property name="visible">True</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="copy">
+              <object class="GtkButton" id="download-button">
                 <property name="label" translatable="yes">Copy Download URL</property>
                 <property name="height_request">30</property>
                 <property name="visible">True</property>
@@ -105,5 +107,8 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+    <property name="title">column</property>
   </object>
 </interface>

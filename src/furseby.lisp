@@ -30,13 +30,17 @@
 (load (compile-file "src/plugins/gutenberg.lisp"))
 
 ; ### Package definition ###
+(in-package COMMON-LISP-USER)
+
+(defun main ()
+  (run))
+
 
 (defpackage :furseby
   (:use :cl :gtk :gdk :gobject 
         :furseby.core
         :furseby.plugins.gutenberg)
   (:export :run))
-
 (in-package :furseby)
 
 
@@ -47,15 +51,14 @@
 (defparameter *search-field* nil)
 (defparameter *result-view* nil)
 (defparameter *result-data* nil)
+(defparameter *download-button* nil)
 
 ; The main function will read the gui/furseby.glade file
 (defun run ()
   (progn
   (format t "Starting furseby...~%")
   (within-main-loop
-    (format t "Inside main loop~%")
     (let ((builder (make-instance 'builder)))
-          (format t "Builder object created ~a~%" builder)
           (builder-add-from-file builder (namestring (make-pathname :name "furseby"
                                                                     :type "glade"
                                                                     :directory '(:relative "gui"))))
@@ -70,19 +73,25 @@
                (setf *search-field* (builder-get-object builder "search-field"))
                (setf *result-view* (builder-get-object builder "result-view"))
                (setf *result-data* (builder-get-object builder "result-data"))
+               (setf *download-button* (builder-get-object builder "download-button"))
                ;the tree view wants it's columns initialised in code not in glade
                (init-tree-columns)
-               ;the hook to act on keypress, because we want to search on ENTER 
                (g-signal-connect *search-field* "key-press-event" (lambda (w e) (declare (ignore w)) (search-on-enter e)))
+               (g-signal-connect *download-button* "clicked" (lambda (w) (declare (ignore w)) (download-clicked)))
                ; on window close keep the gtk running. helps with debugging
                (g-signal-connect *window* "destroy" (lambda (w) (declare (ignore w)) (gtk-main-quit)))
                (widget-show *window*))))
-  (sb-thread:join-thread 
-    (first 
-     (remove-if-not 
-      (lambda (x) (equal (sb-thread::thread-name x) "cl-gtk2 main thread")) 
-      (sb-thread:list-all-threads))))
-  1))
+))
+
+;  (sb-thread:join-thread 
+;    (first 
+;     (remove-if-not 
+;      (lambda (x) (equal (sb-thread::thread-name x) "cl-gtk2 main thread")) 
+;      (sb-thread:list-all-threads))))
+;  1))
+
+(defun download-clicked ()
+  (format t "~a~%" "CLICKED"))
 
 ; initialising the trees columns from code since I couldn't find a way to do it from the editor
 (defun init-tree-columns ()
@@ -96,11 +105,6 @@
         (renderer (make-instance 'cell-renderer-text)))
         (tree-view-column-pack-start column renderer)
         (tree-view-column-add-attribute column renderer "text" 1)
-        (tree-view-append-column *result-view* column))
-  (let ((column (make-instance 'tree-view-column :title "Link" :sort-column-id 2))
-        (renderer (make-instance 'cell-renderer-text)))
-        (tree-view-column-pack-start column renderer)
-        (tree-view-column-add-attribute column renderer "text" 2)
         (tree-view-append-column *result-view* column)))
 
 ; This is the keypress event handler on search-field, will call the search on ENTER (36)
@@ -136,21 +140,18 @@
                                                  (furseby.core::book-title item)
                                                  (furseby.core::book-url item))) results-from-site))
 
-(in-package COMMON-LISP-USER)
-
-(defun main ()
-  (furseby::run))
-
 ;### How to run ###
 
 ;bellow are repl functions only, currently the only way to test the program
 
-;(run)
+(run)
 
-;(sb-thread:release-foreground)
+;(search-all-sites "bovary")
+
+(sb-thread:release-foreground)
 
 ; ## Left To do ##
-; * column sizes should not be dinamyc
+; * do something useful on button click
+; * column sizes should not be dinamic
 ; * error handling in core
-; * research how packages are normally loaded (google.com/codesearch) since quickload takes a while
 
