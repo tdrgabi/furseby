@@ -9,9 +9,6 @@
 ; }
 
 ; This plugin will search project gutenberg
-(defpackage :furseby.plugins.gutenberg
-  (:use :cl :xpath :url-rewrite
-        :furseby.core))
 (in-package :furseby.plugins.gutenberg)
 
 ; Each plugin will define a function which returns the search url

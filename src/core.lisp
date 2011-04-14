@@ -2,14 +2,6 @@
 
 ; This package will contain all the core functions, to lookup plugins, apply the search query on all of them, gather results and return them to the GUI (furseby) package
 
-(defpackage :furseby.core
-  (:use :cl :html :puri :xpath)
-  (:export :search-site
-           :search-all-sites
-           :*sites*
-           :*offline-dev*
-           :make-site
-           :make-book))
 (in-package :furseby.core)
 (defparameter *offline-dev* 1)
 

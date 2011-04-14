@@ -17,32 +17,8 @@
 ; This package has the standard structure. Libraries, compile and load own packages, define current package and some gui code
 ;The gui was built with some GUI designer, which outputs .glade files. Then, using cl-gtk2-gtk library, we build the objects from the glade file
  
-; ### Used libraries ###
-
-(ql:quickload "cl-gtk2-gtk")
-(ql:quickload "cl-libxml2")
-(ql:quickload "lisp-unit")
-(ql:quickload "url-rewrite")
-
-; ### Loading packages ###
-
-(load (compile-file "src/core.lisp"))
-(load (compile-file "src/plugins/gutenberg.lisp"))
-
 ; ### Package definition ###
-(in-package COMMON-LISP-USER)
-
-(defun main ()
-  (run))
-
-
-(defpackage :furseby
-  (:use :cl :gtk :gdk :gobject 
-        :furseby.core
-        :furseby.plugins.gutenberg)
-  (:export :run))
 (in-package :furseby)
-
 
 ; ### GUI code ###
 
